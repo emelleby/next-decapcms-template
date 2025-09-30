@@ -3,7 +3,7 @@ backend:
   name: git-gateway
   repo: emelleby/harestuabil
   branch: master
-  identity_url: https://auth.decapbridge.com/sites/c0b4357e-f956-4992-98d8-eece421609ed
+  identity_url: https://auth.decapbridge.com/sites/45671773-d2dc-404d-8b02-ef0463330547
   gateway_url: https://gateway.decapbridge.com
 
   # Quickly see who did what (optional)
