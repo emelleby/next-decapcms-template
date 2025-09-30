@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
@@ -10,6 +10,7 @@ import { navigationItems } from '@/config/navigation';
 
 export function Header(): React.ReactElement {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const toggleMobileMenu = () => {
@@ -19,6 +20,26 @@ export function Header(): React.ReactElement {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        isMobileMenuOpen
+      ) {
+        closeMobileMenu();
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <>
@@ -58,6 +79,7 @@ export function Header(): React.ReactElement {
 
         {/* Mobile Navigation Dropdown */}
         <div
+          ref={mobileMenuRef}
           className={`md:hidden border-t border-border bg-accent overflow-hidden transition-all duration-300 ease-in-out ${
             isMobileMenuOpen
               ? 'max-h-96 opacity-100'
