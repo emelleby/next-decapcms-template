@@ -159,3 +159,49 @@ collections:
       - label: "Body"
         name: "body"
         widget: "markdown"
+
+  - name: "pages"
+    label: "Pages"
+    folder: "content/pages/"
+    extension: "mdx"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: slug
+    summary: "{{title}}"
+    fields:
+      - label: "Slug"
+        name: "slug"
+        widget: "string"
+        hint: "URL-friendly identifier for the page (e.g., 'about', 'contact')"
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Page title that will appear in the browser tab and as the main heading"
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: false
+        hint: "Optional meta description for SEO (recommended: 150-160 characters)"
+      - label: "Keywords"
+        name: "keywords"
+        widget: "list"
+        required: false
+        summary: "{{fields.keyword}}"
+        field:
+          label: "Keyword"
+          name: "keyword"
+          widget: "string"
+        hint: "SEO keywords for this page"
+      - label: "Last Updated"
+        name: "updated"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        dateFormat: "YYYY-MM-DD"
+        timeFormat: false
+        required: false
+        hint: "When this page was last updated (optional)"
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Page content in Markdown format. You can use MDX components here."
