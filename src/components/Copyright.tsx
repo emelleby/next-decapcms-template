@@ -1,15 +1,9 @@
 export default function Copyright() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <>
-      <p>&copy; 2020</p>
-      <style jsx>
-        {`
-          p {
-            font-size: 0.75rem;
-            text-align: center;
-          }
-        `}
-      </style>
-    </>
+    <p className="text-center text-sm text-muted-foreground">
+      &copy; {currentYear}
+    </p>
   );
 }

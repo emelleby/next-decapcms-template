@@ -12,35 +12,18 @@ type Props = {
 export default function Pagination({ current, pages, link }: Props) {
   const pagination = generatePagination(current, pages);
   return (
-    <ul>
+    <ul className="list-none mt-12 p-0">
       {pagination.map((it, i) => (
-        <li key={i}>
+        <li key={i} className="inline-block mr-4 text-xl text-muted-foreground">
           {it.excerpt ? (
             "..."
           ) : (
             <Link href={link.href(it.page)} as={link.as(it.page)}>
-              <span className={it.page === current ? "active" : null}>{it.page}</span>
+              <span className={it.page === current ? "font-bold text-foreground" : ""}>{it.page}</span>
             </Link>
           )}
         </li>
       ))}
-      <style jsx>{`
-        ul {
-          list-style: none;
-          margin: 3rem 0 0 0;
-          padding: 0;
-        }
-        li {
-          display: inline-block;
-          margin-right: 1em;
-          color: #9b9b9b;
-          font-size: 1.25rem;
-        }
-        a.active {
-          color: #222;
-          font-weight: bold;
-        }
-      `}</style>
     </ul>
   );
 }
