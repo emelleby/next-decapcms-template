@@ -15,11 +15,11 @@ type Props = {
 };
 export default function PostList({ posts, tags, pagination }: Props) {
   return (
-    <div className={"container"}>
-      <div className={"posts"}>
-        <ul className={"post-list"}>
+    <div className="flex mx-auto my-0 max-w-[1200px] w-full px-6">
+      <div className="posts flex flex-col flex-1">
+        <ul className="post-list m-0 p-0 flex-1">
           {posts.map((it, i) => (
-            <li key={i}>
+            <li key={i} className="list-none mb-6">
               <PostItem post={it} />
             </li>
           ))}
@@ -33,52 +33,13 @@ export default function PostList({ posts, tags, pagination }: Props) {
           }}
         />
       </div>
-      <ul className={"categories"}>
+      <ul className="categories hidden md:block m-0 p-0">
         {tags.map((it, i) => (
-          <li key={i}>
+          <li key={i} className="list-none mb-3">
             <TagLink tag={it} />
           </li>
         ))}
       </ul>
-      <style jsx>{`
-        .container {
-          display: flex;
-          margin: 0 auto;
-          max-width: 1200px;
-          width: 100%;
-          padding: 0 1.5rem;
-        }
-        ul {
-          margin: 0;
-          padding: 0;
-        }
-        li {
-          list-style: none;
-        }
-        .posts {
-          display: flex;
-          flex-direction: column;
-          flex: 1 1 auto;
-        }
-        .posts li {
-          margin-bottom: 1.5rem;
-        }
-        .post-list {
-          flex: 1 0 auto;
-        }
-        .categories {
-          display: none;
-        }
-        .categories li {
-          margin-bottom: 0.75em;
-        }
-
-        @media (min-width: 769px) {
-          .categories {
-            display: block;
-          }
-        }
-      `}</style>
     </div>
   );
 }

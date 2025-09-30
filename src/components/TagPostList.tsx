@@ -14,13 +14,13 @@ type Props = {
 };
 export default function TagPostList({ posts, tag, pagination }: Props) {
   return (
-    <div className={"container"}>
-      <h1>
-        All posts / <span>{tag.name}</span>
+    <div className="flex flex-col mx-auto my-0 max-w-[1200px] w-full px-6">
+      <h1 className="mb-8 p-0 font-thin text-3xl md:text-4xl text-muted-foreground">
+        All posts / <span className="font-bold text-foreground">{tag.name}</span>
       </h1>
-      <ul>
+      <ul className="m-0 p-0 flex-1">
         {posts.map((it, i) => (
-          <li key={i}>
+          <li key={i} className="list-none mb-6">
             <PostItem post={it} />
           </li>
         ))}
@@ -36,44 +36,6 @@ export default function TagPostList({ posts, tag, pagination }: Props) {
               : `/posts/tags/${tag.slug}/${page}`,
         }}
       />
-      <style jsx>
-        {`
-          .container {
-            margin: 0 auto;
-            max-width: 1200px;
-            width: 100%;
-            padding: 0 1.5rem;
-            display: flex;
-            flex-direction: column;
-          }
-          h1 {
-            margin: 0 0 2rem;
-            padding: 0;
-            font-weight: 100;
-            font-size: 1.75rem;
-            color: #9b9b9b;
-          }
-          h1 span {
-            font-weight: bold;
-            color: #222;
-          }
-          ul {
-            margin: 0;
-            padding: 0;
-            flex: 1 0 auto;
-          }
-          li {
-            list-style: none;
-            margin-bottom: 1.5rem;
-          }
-
-          @media (min-width: 769px) {
-            h1 {
-              font-size: 2rem;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }
