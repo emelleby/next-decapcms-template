@@ -1,17 +1,13 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import renderToString from "next-mdx-remote/render-to-string";
-import { MdxRemote } from "next-mdx-remote/types";
-import hydrate from "next-mdx-remote/hydrate";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import matter from "gray-matter";
 import { fetchPostContent } from "../../lib/posts";
 import fs from "fs";
 import yaml from "js-yaml";
 import { parseISO } from 'date-fns';
 import PostLayout from "../../components/PostLayout";
-
-import InstagramEmbed from "react-instagram-embed";
-import YouTube from "react-youtube";
-import { TwitterTweetEmbed } from "react-twitter-embed";
+import { YouTubeEmbed } from "@next/third-parties/google";
 
 export type Props = {
   title: string;
@@ -20,15 +16,27 @@ export type Props = {
   tags: string[];
   author: string;
   description?: string;
-  source: MdxRemote.Source;
+  source: MDXRemoteSerializeResult;
 };
 
-const components = { InstagramEmbed, YouTube, TwitterTweetEmbed };
-const slugToPostContent = (postContents => {
-  let hash = {}
-  postContents.forEach(it => hash[it.slug] = it)
-  return hash;
-})(fetchPostContent());
+// Replace old components with Next.js alternatives and placeholders
+const components = { 
+  YouTubeEmbed,
+  // Placeholder components for removed social embeds
+  InstagramEmbed: ({ url }: { url: string }) => (
+    <div style={{ padding: '20px', border: '1px solid #ccc', textAlign: 'center' }}>
+      <p>Instagram embed removed - <a href={url} target="_blank" rel="noopener noreferrer">View on Instagram</a></p>
+    </div>
+  ),
+  TwitterTweetEmbed: ({ tweetId }: { tweetId: string }) => (
+    <div style={{ padding: '20px', border: '1px solid #ccc', textAlign: 'center' }}>
+      <p>Twitter embed removed - <a href={`https://twitter.com/i/web/status/${tweetId}`} target="_blank" rel="noopener noreferrer">View Tweet</a></p>
+    </div>
+  ),
+  YouTube: ({ videoId }: { videoId: string }) => (
+    <YouTubeEmbed videoid={videoId} height={400} />
+  )
+};
 
 export default function Post({
   title,
@@ -39,7 +47,6 @@ export default function Post({
   description = "",
   source,
 }: Props) {
-  const content = hydrate(source, { components })
   return (
     <PostLayout
       title={title}
@@ -49,7 +56,7 @@ export default function Post({
       author={author}
       description={description}
     >
-      {content}
+      <MDXRemote {...source} components={components} />
     </PostLayout>
   )
 }
@@ -64,11 +71,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params.post as string;
+  const slugToPostContent = (postContents => {
+    let hash = {}
+    postContents.forEach(it => hash[it.slug] = it)
+    return hash;
+  })(fetchPostContent());
+  
   const source = fs.readFileSync(slugToPostContent[slug].fullPath, "utf8");
   const { content, data } = matter(source, {
     engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object }
   });
-  const mdxSource = await renderToString(content, { components, scope: data });
+  const mdxSource = await serialize(content, { scope: data });
+  
   return {
     props: {
       title: data.title,
