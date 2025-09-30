@@ -34,7 +34,7 @@ export function Header(): React.ReactElement {
             <DesktopNavigation />
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-x-4">
 
             <ThemeToggle />
 
@@ -77,10 +77,10 @@ export function Header(): React.ReactElement {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200 ${
+                    className={`block px-3 py-2 border-b text-base rounded-md transition-colors duration-200 ${
                       isActive
-                        ? "text-foreground bg-background"
-                        : "text-foreground/80 hover:text-foreground hover:bg-background/50"
+                        ? "font-bold border-primary"
+                        : "border-border font-medium"
                     }`}
                     onClick={closeMobileMenu}
                     aria-current={isActive ? 'page' : undefined}
